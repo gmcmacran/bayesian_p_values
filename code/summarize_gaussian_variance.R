@@ -13,21 +13,21 @@ sim_df <- readRDS(fn)
 ###############
 sim_df %>%
   filter(alt == "less", seed <= 2) %>%
-  ggplot(aes(x = factor(mu), y = pvalue)) +
+  ggplot(aes(x = factor(tau), y = pvalue)) +
   geom_boxplot() +
   scale_y_continuous(breaks = seq(0, 1, .20), labels = percent, limits = c(0, 1)) +
   facet_grid(rows = vars(seed), cols = vars(N)) +
-  labs(title = "Alternative: Less", x = "Mu", y = "P Value")
+  labs(title = "Alternative: Less", x = "Variance", y = "P Value")
 
 ggsave(filename = "results/graphs/gaussian_var_less.png", width = 10, height = 10)
 
 sim_df %>%
   filter(alt == "greater", seed <= 2) %>%
-  ggplot(aes(x = factor(mu), y = pvalue)) +
+  ggplot(aes(x = factor(tau), y = pvalue)) +
   geom_boxplot() +
   scale_y_continuous(breaks = seq(0, 1, .20), labels = percent, limits = c(0, 1)) +
   facet_grid(rows = vars(seed), cols = vars(N)) +
-  labs(title = "Alternative: Greater", x = "Mu", y = "P Value")
+  labs(title = "Alternative: Greater", x = "Variance", y = "P Value")
 
 ggsave(filename = "results/graphs/gaussian_var_greater.png", width = 10, height = 10)
 
