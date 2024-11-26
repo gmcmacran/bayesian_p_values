@@ -30,7 +30,7 @@ calc_p_value <- function(obs, p, alpha, beta, alt) {
 ################
 
 B <- 50
-ps <- c(.05, .25, .50, .75, .95)
+ps <- c(.25, .50, .75)
 alphas <- seq(1, 5, 1)
 betas <- seq(1, 5, 1)
 ns <- seq(5, 55, 10)
