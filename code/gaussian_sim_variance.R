@@ -29,14 +29,14 @@ calc_p_value <- function(obs, tau, mu0, n0, alpha, beta, alt) {
 }
 
 ################
-# Type I
+# Run sim
 ################
 
-B <- 50
-mus <- seq(-3, 3, 3)
-taus <- seq(1, 5, 2)
-mu0s <- seq(-3, 3, 3)
-n0s <- seq(1, 5, 2)
+B <- 2
+mus <- 0 # Setting to a single value so only priors are changing in README's graphs.
+taus <- seq(1, 5, 1)
+mu0s <- seq(-3, 3, 1)
+n0s <- seq(1, 5, 1)
 alphas <- seq(1, 5, 1)
 betas <- seq(1, 5, 1)
 ns <- seq(5, 55, 10)
@@ -49,39 +49,37 @@ all(betas > 0)
 total_sim <- B * length(mus) * length(taus) * length(mu0s) * length(n0s) * length(alphas) * length(betas)
 print(str_c("Total number of iterations: ", total_sim))
 
-run_sim <- function(mus) {
-  sim_results <- tibble()
-  for (mu in mus) {
-    for (tau in taus) {
-      for (i in 1:B) {
-        for (alt in c("less", "greater")) {
-          for (n in ns) {
-            # Hold data constant
-            testName <- "gaussian_mu"
-            set.seed(i)
-            obs <- rnorm(n = n, mean = mu, sd = tau^.5)
+sim_results <- tibble()
+for (mu in mus) {
+  for (tau in taus) {
+    for (i in 1:B) {
+      for (alt in c("less", "greater")) {
+        for (n in ns) {
+          # Hold data constant
+          testName <- "gaussian_mu"
+          set.seed(i)
+          obs <- rnorm(n = n, mean = mu, sd = tau^.5)
 
-            # Change prior's parameters.
-            for (mu0 in mu0s) {
-              for (n0 in n0s) {
-                for (alpha in alphas) {
-                  for (beta in betas) {
-                    pvalue <- calc_p_value(obs = obs, tau = tau, mu0 = mu0, n0 = n0, alpha = alpha, beta = beta, alt = alt)
-                    temp <- tibble(
-                      test = testName,
-                      mu = mu,
-                      tau = tau,
-                      seed = i,
-                      alt = alt,
-                      N = n,
-                      mu0 = mu0,
-                      n0 = n0,
-                      alpha = alpha,
-                      beta = beta,
-                      pvalue = pvalue
-                    )
-                    sim_results <- sim_results %>% bind_rows(temp)
-                  }
+          # Change prior's parameters.
+          for (mu0 in mu0s) {
+            for (n0 in n0s) {
+              for (alpha in alphas) {
+                for (beta in betas) {
+                  pvalue <- calc_p_value(obs = obs, tau = tau, mu0 = mu0, n0 = n0, alpha = alpha, beta = beta, alt = alt)
+                  temp <- tibble(
+                    test = testName,
+                    mu = mu,
+                    tau = tau,
+                    seed = i,
+                    alt = alt,
+                    N = n,
+                    mu0 = mu0,
+                    n0 = n0,
+                    alpha = alpha,
+                    beta = beta,
+                    pvalue = pvalue
+                  )
+                  sim_results <- sim_results %>% bind_rows(temp)
                 }
               }
             }
@@ -90,15 +88,7 @@ run_sim <- function(mus) {
       }
     }
   }
-  return(sim_results)
 }
-
-# plan(sequential)
-plan(multisession, workers = 8)
-sim_results <- future_map_dfr(
-  .x = mus, .f = run_sim, .progress = TRUE,
-  .options = furrr_options(seed = TRUE)
-)
 
 # Check structure
 sim_results %>%

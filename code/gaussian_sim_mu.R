@@ -29,12 +29,12 @@ calc_p_value <- function(obs, mu, tau, mu0, n0, alt) {
 }
 
 ################
-# Type I
+# Run sim
 ################
 
-B <- 50
+B <- 2
 mus <- seq(-3, 3, 1)
-taus <- seq(1, 5, 1)
+taus <- 5 # Setting to a single value so only priors are changing in README's graphs.
 mu0s <- seq(-3, 3, 1)
 n0s <- seq(1, 5, 1)
 ns <- seq(5, 55, 10)
