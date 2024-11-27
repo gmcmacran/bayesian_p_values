@@ -9,7 +9,7 @@ library(furrr)
 # mu ~ N(mu0, n0*tau) variance, not standard deviation
 # X|mu, tau ~ N(mu, tau)
 # See included pdf.
-calc_p_value <- function(obs, mu, tau, mu0, n0, alpha, beta, alt) {
+calc_p_value <- function(obs, mu, tau, mu0, n0, alt) {
   x_bar <- mean(obs)
   n <- length(obs)
 
@@ -37,16 +37,12 @@ mus <- seq(-3, 3, 3)
 taus <- seq(1, 5, 2)
 mu0s <- seq(-3, 3, 3)
 n0s <- seq(1, 5, 2)
-alphas <- seq(1, 5, 1)
-betas <- seq(1, 5, 1)
 ns <- seq(5, 55, 10)
 
 all(taus > 0)
 all(n0s > 0)
-all(alphas > 0)
-all(betas > 0)
 
-total_sim <- B * length(mus) * length(taus) * length(mu0s) * length(n0s) * length(alphas) * length(betas)
+total_sim <- B * length(mus) * length(taus) * length(mu0s) * length(n0s)
 print(str_c("Total number of iterations: ", total_sim))
 
 run_sim <- function(mus) {
@@ -64,25 +60,19 @@ run_sim <- function(mus) {
             # Change prior's parameters.
             for (mu0 in mu0s) {
               for (n0 in n0s) {
-                for (alpha in alphas) {
-                  for (beta in betas) {
-                    pvalue <- calc_p_value(obs = obs, mu = mu, tau = tau, mu0 = mu0, n0 = n0, alpha = alpha, beta = beta, alt = alt)
-                    temp <- tibble(
-                      test = testName,
-                      mu = mu,
-                      tau = tau,
-                      seed = i,
-                      alt = alt,
-                      N = n,
-                      mu0 = mu0,
-                      n0 = n0,
-                      alpha = alpha,
-                      beta = beta,
-                      pvalue = pvalue
-                    )
-                    sim_results <- sim_results %>% bind_rows(temp)
-                  }
-                }
+                pvalue <- calc_p_value(obs = obs, mu = mu, tau = tau, mu0 = mu0, n0 = n0, alt = alt)
+                temp <- tibble(
+                  test = testName,
+                  mu = mu,
+                  tau = tau,
+                  seed = i,
+                  alt = alt,
+                  N = n,
+                  mu0 = mu0,
+                  n0 = n0,
+                  pvalue = pvalue
+                )
+                sim_results <- sim_results %>% bind_rows(temp)
               }
             }
           }
