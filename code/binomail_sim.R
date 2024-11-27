@@ -4,7 +4,7 @@ library(stringr)
 ################
 # Define p value calculation
 ################
-# Based on posterior on page 611 of math stats book
+# Based on posterior on page 613 of math stats book
 # p ~ beta(alpha, beta) or beta(shape1, shape2) in R's interface
 # Y|p ~ binomail(p)
 # obs ~ bernoli(p)
