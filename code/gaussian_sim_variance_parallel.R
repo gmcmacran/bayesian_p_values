@@ -94,7 +94,7 @@ run_sim <- function(mus) {
 }
 
 # plan(sequential)
-plan(multisession, workers = 4)
+plan(multisession, workers = 8)
 sim_results <- future_map_dfr(
   .x = mus, .f = run_sim, .progress = TRUE,
   .options = furrr_options(seed = TRUE)
