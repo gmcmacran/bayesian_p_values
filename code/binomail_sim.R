@@ -26,13 +26,13 @@ calc_p_value <- function(obs, p, alpha, beta, alt) {
 }
 
 ################
-# Type I
+# Run sim
 ################
 
-B <- 50
+B <- 2
 ps <- c(.25, .50, .75)
-alphas <- seq(1, 5, 1)
-betas <- seq(1, 5, 1)
+alphas <- seq(1, 10, 1)
+betas <- seq(1, 10, 1)
 ns <- seq(5, 55, 10)
 
 all(ps > 0)

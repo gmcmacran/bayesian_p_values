@@ -22,13 +22,13 @@ calc_p_value <- function(obs, theta, alpha, beta, alt) {
 }
 
 ################
-# Type I
+# Run sim
 ################
 
-B <- 50
+B <- 2
 thetas <- c(1, 5, 10, 15, 20, 25)
-alphas <- seq(1, 5, 1)
-betas <- seq(1, 5, 1)
+alphas <- seq(1, 10, 1)
+betas <- seq(1, 10, 1)
 ns <- seq(5, 55, 10)
 
 all(thetas > 0)
