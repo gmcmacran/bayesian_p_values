@@ -78,7 +78,7 @@ P value range interpretations:
 
 ### Testing the mean of a Gaussian random variable.
 
-As sample size increases, the prior’s parameters don’t have much affect.
+As sample size increases, the prior’s parameters don’t have much effect.
 For N equal to 5, the prior selection is a major factor.
 
 <img src="man/figures/README-resultsOne-1.png" width="100%" /><img src="man/figures/README-resultsOne-2.png" width="100%" />
@@ -109,7 +109,7 @@ different ranges.
 ### Main Take Aways
 
 - For tests about a Gaussian random variable, changes in the conjugate
-  prior did not have major affects of p value calculations.
+  prior did not have major effects of p value calculations.
 - For tests about a Poisson random variable, the prior distribution had
   a great deal of influence.
 - For tests about a Bernoulli random variable, the prior distribution
